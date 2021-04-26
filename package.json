@@ -1,0 +1,32 @@
+{
+  "name": "@skyf4ll/redisorm",
+  "version": "0.0.1",
+  "description": "A Redis ORM for Node",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --hot",
+    "build": "webpack"
+  },
+  "author": "Dane Stevens <dane@dsmedia.ca>",
+  "license": "MIT",
+  "keywords": [
+    "redis orm nodejs",
+    "redis orm",
+    "orm for redis"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
+    "@babel/node": "^7.13.13",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "luxon": "^1.26.0",
+    "nanoid": "^3.1.22",
+    "pluralize": "^8.0.0",
+    "redis": "^3.1.1",
+    "uuid": "^8.3.2"
+  }
+}

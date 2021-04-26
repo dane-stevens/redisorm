@@ -1,6 +1,6 @@
 {
   "name": "@skyf4ll/redisorm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Redis ORM for Node",
   "main": "src/index.js",
   "scripts": {

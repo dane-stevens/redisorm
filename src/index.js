@@ -146,9 +146,18 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
 
         const results = await Promise.all(getResults)
 
+        const formattedResults = []
+        for (let i = 0; i < results.length; i++) {
+            const obj = {}
+            for (const key in results[i]) {
+                obj[key] = schema[key].get(results[i][key], schema[key].escape)
+            }
+            formattedResults.push(obj)
+        }
+
         return {
             cursor: Number(nextOffset),
-            results
+            results: formattedResults
         }
     
     }

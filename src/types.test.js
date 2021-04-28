@@ -10,7 +10,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-    // client.client.flushall();
+    client.client.flushall();
     client.client.quit();
 });
 

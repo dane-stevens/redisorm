@@ -90,7 +90,7 @@ function redisEscape(value) {
     }
   
     const newValue = value.replace(/,|\.|<|>|\{|\}|\[|\]|"|'|:|;|!|@|#|\$|%|\^|&|\*|\(|\)|-|\+|=|~/g, function(x) {
-            return replacements[x]
+        return replacements[x]
     })
     return newValue
   }
@@ -126,7 +126,7 @@ function redisParse(value) {
     }
   
     const newValue = value.replace(/,|\.|<|>|\{|\}|\[|\]|"|'|:|;|!|@|#|\$|%|\^|&|\*|\(|\)|-|\+|=|~/g, function(x) {
-            return replacements[x]
+        return replacements[x]
     })
     return newValue
   }

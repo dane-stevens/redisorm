@@ -25,7 +25,7 @@ test('SSCAN Counting', async () => {
         redisClient.sadd(key, i)
     }
 
-    const results = await redisClient.sscanAsync(key, [0, 'COUNT', 10]);
+    const results = await redisClient.sscan(key, [0, 'COUNT', 10]);
 
 
     expect(1).toEqual(1);

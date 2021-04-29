@@ -1,17 +1,19 @@
-const redis = require("redis")
-const bluebird = require("bluebird")
-const pluralize = require("pluralize")
+// const redis = require("redis")
+const Redis = require("ioredis")
+// const bluebird = require("bluebird")
+// const pluralize = require("pluralize")
 const DataTypes = require("./types")
 
-redis.addCommand('FT.CREATE')
-redis.addCommand('FT.SEARCH')
+// redis.addCommand('FT.CREATE')
+// redis.addCommand('FT.SEARCH')
 
-bluebird.promisifyAll(redis)
+// bluebird.promisifyAll(redis)
 
 class RedisORM {
 
     constructor(host, port, password, options) {
-        this.client = redis.createClient({ host, port, password })
+        // this.client = redis.createClient({ host, port, password })
+        this.client = new Redis({ host, port, password })
         this.options = options
     }
 
@@ -47,8 +49,8 @@ class RedisORM {
                     if (options.fields[field].sortable) fields.push('SORTABLE')
                 }
 
-                this.client.sendCommandAsync('FT.DROPINDEX', [`${ hash }:idx`])
-                this.client.sendCommandAsync(`FT.CREATE`, [
+                this.client.sendCommand('FT.DROPINDEX', [`${ hash }:idx`])
+                this.client.sendCommand(`FT.CREATE`, [
                     `${ hash }:idx`, `PREFIX`, 1, `${ hash }:`, 'SCHEMA', 
                     ...fields
                 ])
@@ -110,10 +112,10 @@ const set = async (values, schema, hash, client, options) => {
         returnValues[field] = schema[field].get(insertValue, schema[field].escape)
     }
 
-    await client.hsetAsync(...insert)
+    await client.hset(...insert)
 
     const setKey = getKey(hash + 's')
-    await client.saddAsync(setKey, hashKey)
+    await client.sadd(setKey, hashKey)
 
     // await client.sadd(setKey, hashKey + '|' + values.lat + '|' + values.lng)
 
@@ -123,7 +125,7 @@ const set = async (values, schema, hash, client, options) => {
 
 const get = async (id, schema, hash, client, options) => {
     const key = getKey(hash, id)
-    const result = await client.hgetallAsync(key)
+    const result = await client.hgetall(key)
     const results = {}
     for (const field in result) {
         results[field] = schema[field].get(result[field], schema[field].escape)
@@ -137,11 +139,11 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
 
         const setKey = getKey(hash + 's')
 
-        const [ nextOffset, keys ] = await client.sscanAsync(setKey, [offset, 'COUNT', limit])
+        const [ nextOffset, keys ] = await client.sscan(setKey, [offset, 'COUNT', limit])
         
         const getResults = []
         for (let i = 0; i < keys.length; i++) {
-            getResults.push(client.hgetallAsync(keys[i]))
+            getResults.push(client.hgetall(keys[i]))
         }
 
         const results = await Promise.all(getResults)
@@ -163,7 +165,7 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
     }
 
     const key = getKey(hash, 'idx')
-    const results = await client.sendCommandAsync('ft.search', [key, search, 'LIMIT', offset, limit])
+    const results = await client.sendCommand('ft.search', [key, search, 'LIMIT', offset, limit])
 
     const [ count, ...rest ] = results
 

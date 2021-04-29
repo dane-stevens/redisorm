@@ -137,7 +137,7 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
 
         const setKey = getKey(hash + 's')
 
-        const [ nextOffset, keys ] = await client.sscanAsync(setKey, offset, 'COUNT ' + limit)
+        const [ nextOffset, keys ] = await client.sscanAsync(setKey, [offset, 'COUNT', limit])
         
         const getResults = []
         for (let i = 0; i < keys.length; i++) {

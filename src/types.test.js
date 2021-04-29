@@ -3,6 +3,8 @@ const uuid = require("uuid");
 
 const client = new Redis()
 
+const redisClient = client.client
+
 const RedisORM = Redis
 
 beforeAll(() => {
@@ -10,8 +12,25 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-    client.client.flushall();
-    client.client.quit();
+    redisClient.flushall();
+    redisClient.quit();
+});
+
+test('SSCAN Counting', async () => {
+
+
+    const key = 'test:set'
+
+    for (let i = 0; i < 100; i++) {
+        redisClient.sadd(key, i)
+    }
+
+    const results = await redisClient.sscanAsync(key, [0, 'COUNT', 10]);
+
+
+    expect(1).toEqual(1);
+
+
 });
 
 test('Type conversion', async () => {

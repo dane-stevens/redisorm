@@ -34,7 +34,7 @@ const types = {
     },
     BOOLEAN: {
         set: (val) => val ? 1 : 0,
-        get: (val) => val === '1',
+        get: (val) => val === '1' || val === 'true' || val === 1,
         validate: (val) => typeof val === 'boolean',
         type: 'boolean'
     },

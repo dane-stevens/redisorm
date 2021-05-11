@@ -165,7 +165,7 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
     }
 
     const key = getKey(hash, 'idx')
-    const results = await client.sendCommand('ft.search', [key, search, 'LIMIT', offset, limit])
+    const results = await client.send_command('ft.search', [key, search, 'LIMIT', offset, limit])
 
     const [ count, ...rest ] = results
 

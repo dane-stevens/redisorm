@@ -104,7 +104,7 @@ const set = async (values, schema, hash, client, options) => {
 
     for (const field in values) {
         if (typeof schema[field] !== 'object') throw new ValidationError(`Field level validation failed for: ${ field }. Unknown field.`)
-        if (!schema[field].validate(values[field], schema[field].values)) throw new ValidationError(`Field level validation failed for: ${ field }`, field, `${ field } must be of type ${ schema[field].type }: a ${ typeof values[field] } value was provided`)
+        if (values[field] !== null && !schema[field].validate(values[field], schema[field].values)) throw new ValidationError(`Field level validation failed for: ${ field }`, field, `${ field } must be of type ${ schema[field].type }: a ${ typeof values[field] } value was provided`)
 
         const insertValue = schema[field].set(values[field], schema[field].escape)
         insert.push(field)

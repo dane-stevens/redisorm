@@ -9,10 +9,11 @@ const RedisORM = Redis
 
 beforeAll(() => {
     jest.setTimeout(60000);
+    redisClient.flushall()
 });
 
 afterAll(() => {
-    redisClient.flushall();
+    // redisClient.flushall();
     redisClient.quit();
 });
 
@@ -40,6 +41,11 @@ test('Type conversion', async () => {
         firstName: RedisORM.STRING,
         lastName: RedisORM.STRING,
         age: RedisORM.INTEGER,
+        email: RedisORM.STRING,
+        emailEscaped: {
+            type: RedisORM.STRING,
+            escape: true,
+        },
         percentage: RedisORM.FLOAT,
         isSuccessful: RedisORM.BOOLEAN,
         geo: RedisORM.JSON,
@@ -51,6 +57,8 @@ test('Type conversion', async () => {
         firstName: 'Fred',
         lastName: 'Flinstone',
         age: 87,
+        email: 'dane@dsmedia.ca',
+        emailEscaped: `,.<>{}[]"':;!@#$%^&*()-+=~`,
         percentage: 99.5,
         isSuccessful: true,
         geo: {
@@ -62,7 +70,7 @@ test('Type conversion', async () => {
 
     await Hash.set(hash)
 
-    const hashFromRedis = await Hash.getAll()
+    const hashFromRedis = await Hash.getAll();
 
     expect(hashFromRedis.results[0]).toEqual(hash);
 

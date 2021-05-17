@@ -35,6 +35,9 @@ class RedisORM {
                 if (schema[field].values) {
                     operators.values = schema[field].values
                 }
+                if (schema[field].escape) {
+                    operators.escape = true
+                }
             }
             hashDefine[field] = operators
         }
@@ -146,7 +149,7 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
             getResults.push(client.hgetall(keys[i]))
         }
 
-        const results = await Promise.all(getResults)
+        const results = await Promise.all(getResults);
 
         const formattedResults = []
         for (let i = 0; i < results.length; i++) {

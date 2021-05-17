@@ -33,8 +33,8 @@ const types = {
         type: 'string'
     },
     ARRAY: {
-        set: (val) => val.join(),
-        get: (val) => val.split(),
+        set: (val) => val.join(","),
+        get: (val) => val.split(","),
         validate: (val) => Array.isArray(val),
         type: 'string'
     },

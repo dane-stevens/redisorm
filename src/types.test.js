@@ -12,7 +12,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-    // redisClient.flushall();
+    redisClient.flushall();
     redisClient.quit();
 });
 

@@ -36,7 +36,7 @@ const types = {
         set: (val) => val.join(","),
         get: (val) => val.split(","),
         validate: (val) => Array.isArray(val),
-        type: 'string'
+        type: 'object'
     },
     BOOLEAN: {
         set: (val) => val ? 1 : 0,

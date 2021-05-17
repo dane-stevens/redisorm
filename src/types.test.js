@@ -12,7 +12,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-    redisClient.flushall();
+    // redisClient.flushall();
     redisClient.quit();
 });
 
@@ -42,7 +42,8 @@ test('Type conversion', async () => {
         age: RedisORM.INTEGER,
         percentage: RedisORM.FLOAT,
         isSuccessful: RedisORM.BOOLEAN,
-        geo: RedisORM.JSON
+        geo: RedisORM.JSON,
+        memberOf: RedisORM.ARRAY,
     });
 
     const hash = {
@@ -55,7 +56,8 @@ test('Type conversion', async () => {
         geo: {
             lat: 43.919979,
             lng: -80.094315
-        }
+        },
+        memberOf: ['NAPA', 'OK TIRE']
     }
 
     await Hash.set(hash)

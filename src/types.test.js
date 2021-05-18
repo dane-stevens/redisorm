@@ -75,3 +75,39 @@ test('Type conversion', async () => {
     expect(hashFromRedis.results[0]).toEqual(hash);
 
 });
+
+test('Search', async () => {
+
+    const Search = client.define('search', {
+        id: RedisORM.INTEGER,
+    });
+
+    const searches = [
+        { id: 3 },
+        { id: 7 },
+        { id: 1 },
+        { id: 4 }
+    ]
+
+    searches.forEach(async search => await Search.set(search))
+
+    await redisClient.send_command('FT.CREATE', [
+        'search:idx', 'PREFIX', 1, 'search:', 'SCHEMA',
+        'id', 'TEXT', 'SORTABLE'
+    ])
+
+    const results = await Search.getAll('*', 10, 0, 'id', 'DESC')
+
+    const expectedResult = {
+        cursor: 10,
+        count: 4,
+        results: [
+            { key: 'search:7', id: 7 },
+            { key: 'search:4', id: 4 },
+            { key: 'search:3', id: 3 },
+            { key: 'search:1', id: 1 }
+        ]
+    }
+    expect(results).toEqual(expectedResult)
+
+});

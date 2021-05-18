@@ -66,7 +66,7 @@ class RedisORM {
         return { 
             set: (values) => set(values, hashDefine, hash, this.client, this.options),
             get: (values) => get(values, hashDefine, hash, this.client, this.options),
-            getAll: (search, limit, offset) => getAll(search, limit, offset, hashDefine, hash, this.client, this.options),
+            getAll: (search, limit, offset, sortBy, sortDirection) => getAll(search, limit, offset, sortBy, sortDirection, hashDefine, hash, this.client, this.options),
             schema: hashDefine,
         }
 
@@ -136,7 +136,7 @@ const get = async (id, schema, hash, client, options) => {
     return results
 }
 
-const getAll = async (search, limit = 10, offset = 0, schema, hash, client, options) => {
+const getAll = async (search, limit = 10, offset = 0, sortBy, sortDirection, schema, hash, client, options) => {
 
     if (!search) {
 
@@ -168,7 +168,15 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
     }
 
     const key = getKey(hash, 'idx')
-    const results = await client.send_command('ft.search', [key, search, 'LIMIT', offset, limit])
+
+    const sort = []
+    if (sortBy) {
+        sort.push('SORTBY')
+        sort.push(sortBy),
+        sort.push(sortDirection || 'ASC')
+    }
+
+    const results = await client.send_command('ft.search', [key, search, 'LIMIT', offset, limit, ...sort])
 
     const [ count, ...rest ] = results
 

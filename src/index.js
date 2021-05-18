@@ -191,6 +191,7 @@ const getAll = async (search, limit = 10, offset = 0, schema, hash, client, opti
     }
 
     return {
+        cursor: offset + limit,
         count: Number(count),
         results: formattedResults
     }

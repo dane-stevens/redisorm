@@ -132,7 +132,6 @@ function redisParse(value) {
     }
   
     const newValue = value.replace(/\,|\\.|\<|\>|\\{|\\}|\\\[|\\]|\"|\'|\:|\;|\!|\@|\#|\\$|\%|\\^|\&|\\\*|\\(|\\)|\-|\\+|\=|\~/g, function(x) {
-        console.log('X----',x, replacements[x])
         return replacements[x]
     })
     return newValue

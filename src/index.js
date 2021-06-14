@@ -191,7 +191,7 @@ const getAll = async (search, limit = 10, offset = 0, sortBy, sortDirection, sch
                     const field = result[ii]
                     const value = result[ii + 1]
                     obj.key = key
-                    if (!schema[field]) throw new Error(field + ' is not found')
+                    if (typeof schema[field] === 'undefined') console.log('ERROR----', field, 'is undefined')
                     obj[field] = schema[field].get(value, schema[field].escape)
                 }
             }
